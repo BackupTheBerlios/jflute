@@ -84,3 +84,10 @@ Usage: java  -classpath .;xerces.jar;../mcl_jni/ flute [options] file|directory 
      -int           interactive mode (select file to be received) 
                     default is to receive all files 
 
+---------------------------------------------------------------------------------------------------------
+
+The mcl_jni.dll file in this distribution is taken from the MCLv3 project:
+http://www.inrialpes.fr/planete/people/roca/mcl/mcl.html 
+
+The xerces.jar and DOMWriter.java software are (c) 2000 The Apache Software Foundation
+This product includes software developed by the Apache Software Foundation (http://www.apache.org/).
