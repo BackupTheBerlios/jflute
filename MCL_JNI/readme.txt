@@ -16,8 +16,8 @@ to Java, but to build create an JNI (Java Native Interface) to be able
 to use the libraries from the MCLv3 directly.
 
 Compilation is straightforward:
-javac MCL_JNI.java
-javah -jni MCL_JNI
+javac mcl\MCL_JNI.java
+javah -jni mcl.MCL_JNI
 javac mclsend.java -classpath .
 javac mclrecv.java -classpath .
 (The last two lines create two small test programs.)

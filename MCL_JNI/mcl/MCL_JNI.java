@@ -1,48 +1,30 @@
 
-/*
- *  Copyright (c) 2005-2006 Fraunhofer FOKUS
- *  (main author: Christian Fuhrhop - fuhrhop@fokus.fhg.de)
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU General Public License
- *  as published by the Free Software Foundation; either version 2
- *  of the License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
- *  USA.
- */
+package mcl;
 
-class MCL_JNI
+public class MCL_JNI
 {
 
     /* various defines */
-    final static int DEL_MODE_PUSH          =0;      /* tx once, assumes synchronized rx */
-    final static int DEL_MODE_ON_DEMAND     =1;      /* tx cyclically, rx start at any time*/
-    final static int DEL_MODE_STREAMING     =2;      /* streaming mode */
-    final static int MCL_TX_PROFILE_LOW_RATE_INTERNET  =0;   /* modem to=2Mbps connections */
-    final static int MCL_TX_PROFILE_MID_RATE_INTERNET  =1;   /* eg with VPNs, xDSL */
-    final static int MCL_TX_PROFILE_HIGH_SPEED_INTERNET=2;   /* eg for fast/Gbps ethernet */
-    final static int MCL_TX_PROFILE_HIGH_SPEED_LAN     =3;   /* eg for fast/Gbps ethernet */
-    final static int MCL_SCHED_LCT1         =0;      /* see mcl_profile.h for descr. */
-    final static int MCL_SCHED_LCT2         =1;      /* see mcl_profile.h for descr. */
-    final static int MCL_SCHED_LCT3         =2;      /* see mcl_profile.h for descr. */
-    final static int MCL_SCHED_NB           =3;      /* nb of schedulers defined */
-    final static int MCL_SCHED_SEQUENTIAL_OBJ_ORDER =0;/* tx ADUs in sequence */
-    final static int MCL_SCHED_RANDOM_OBJ_ORDER     =1;/* tx ADUs in random order in each layer */
-    final static int MCL_SCHED_PARTIALLY_MIXED_ORDER=2;/* mix partially all DUs of all ADUs*/
-    final static int MCL_SCHED_MIXED_ORDER          =3;/* mix all DUs of all ADUs */
-    final static int MCL_FEC_CODE_NULL      =0;      /* null code (i.e. no FEC encoding) */
-    final static int MCL_FEC_CODE_RSE       =1;      /* Reed-Solomon erasure FEC code */
-    final static int MCL_FEC_CODE_LDGM      =2;      /* Low Density Generator Matrix */
-    final static int MCL_FEC_CODE_LDPC      =3;      /* Low Density Parity Check */
-    final static int MCL_FEC_CODE_MAX_NB    =4;      /* Max number of FEC codes available */
+    final public static int DEL_MODE_PUSH          =0;      /* tx once, assumes synchronized rx */
+    final public static int DEL_MODE_ON_DEMAND     =1;      /* tx cyclically, rx start at any time*/
+    final public static int DEL_MODE_STREAMING     =2;      /* streaming mode */
+    final public static int MCL_TX_PROFILE_LOW_RATE_INTERNET  =0;   /* modem to=2Mbps connections */
+    final public static int MCL_TX_PROFILE_MID_RATE_INTERNET  =1;   /* eg with VPNs, xDSL */
+    final public static int MCL_TX_PROFILE_HIGH_SPEED_INTERNET=2;   /* eg for fast/Gbps ethernet */
+    final public static int MCL_TX_PROFILE_HIGH_SPEED_LAN     =3;   /* eg for fast/Gbps ethernet */
+    final public static int MCL_SCHED_LCT1         =0;      /* see mcl_profile.h for descr. */
+    final public static int MCL_SCHED_LCT2         =1;      /* see mcl_profile.h for descr. */
+    final public static int MCL_SCHED_LCT3         =2;      /* see mcl_profile.h for descr. */
+    final public static int MCL_SCHED_NB           =3;      /* nb of schedulers defined */
+    final public static int MCL_SCHED_SEQUENTIAL_OBJ_ORDER =0;/* tx ADUs in sequence */
+    final public static int MCL_SCHED_RANDOM_OBJ_ORDER     =1;/* tx ADUs in random order in each layer */
+    final public static int MCL_SCHED_PARTIALLY_MIXED_ORDER=2;/* mix partially all DUs of all ADUs*/
+    final public static int MCL_SCHED_MIXED_ORDER          =3;/* mix all DUs of all ADUs */
+    final public static int MCL_FEC_CODE_NULL      =0;      /* null code (i.e. no FEC encoding) */
+    final public static int MCL_FEC_CODE_RSE       =1;      /* Reed-Solomon erasure FEC code */
+    final public static int MCL_FEC_CODE_LDGM      =2;      /* Low Density Generator Matrix */
+    final public static int MCL_FEC_CODE_LDPC      =3;      /* Low Density Parity Check */
+    final public static int MCL_FEC_CODE_MAX_NB    =4;      /* Max number of FEC codes available */
     
     
     static{System.loadLibrary("mcl_jni");}
