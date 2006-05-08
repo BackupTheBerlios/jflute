@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.File;
 import java.lang.Long;
-import mcl.MCL_JNI;
 
 class FDT {
 
@@ -135,11 +134,10 @@ boolean hasTOIinFDT(Element ele, long toi){
         // this one originally uses XPath to parse the document, but since that is DOM 3 and
         // Xerces is only DOM 2, we use a different implementation
         
-        // has this element an attribute TOI and the same value?
+        // has this element an attribute TOI and the same value?    
         
-        
-        if(ele.hasAttribute("TOI")&&(root.getAttribute("TOI").length()>0)){         
-          if(toi==Long.valueOf(root.getAttribute("TOI")).longValue())return true;
+        if(ele.hasAttribute("TOI")&&(ele.getAttribute("TOI").length()>0)){        
+          if(toi==Long.valueOf(ele.getAttribute("TOI")).longValue())return true;
         }
        
         // if not, go through all the child elements
@@ -171,7 +169,7 @@ String locationForTOIinFDT(Element ele, long toi){
    
         // has this element an attribute TOI and the same value?
         if(ele.hasAttribute("TOI")){
-          if(toi==Long.valueOf(root.getAttribute("TOI")).longValue()){
+          if(toi==Long.valueOf(ele.getAttribute("TOI")).longValue()){
             if(ele.hasAttribute("Content-Location"))result=new String(ele.getAttribute("Content-Location"));
             return result;
           }
@@ -185,16 +183,17 @@ String locationForTOIinFDT(Element ele, long toi){
         int nchilds = childs.getLength() ;
         
         if(nchilds==0)return result;
-     
+
         /* Update File nodes */
         for (int i = 0; i < nchilds; i++) {
                 Node nodeel = childs.item(i);
-
                 if(nodeel.getNodeType()==Node.ELEMENT_NODE)
                 {
-                  result= new String(locationForTOIinFDT((Element) nodeel,  toi));
-                  // if one of the children (or their descendants) has this TOI, we return that result
-                  if(result!=null)return result;
+                if(locationForTOIinFDT((Element) nodeel,  toi)!=null){
+                    result= new String(locationForTOIinFDT((Element) nodeel,  toi));
+                    // if one of the children (or their descendants) has this TOI, we return that result
+                    if(result!=null)return result;
+                  }
                 }
          }
          // if none of the children (and their descendants) has this TOI, we don't have it in the document
@@ -286,14 +285,14 @@ void updateFDT(byte [] xmlfdtinstance, int len){
                           System.exit(0);  
                         }
                         String toi = new String(attr.getValue());
-                
                         if(! hasTOIinFDT(root,Long.valueOf(toi).longValue()))
                         {                                        
                                 // add this element to the root element of the fdt document
                                 Node importnode = fdt.importNode(nodeel, true);
                                 // Append the imported Node to the childs list of the root element
-                                try { 
+                                try {                           
                                   root.appendChild(importnode);
+
                                  } catch (Exception ex) {
                                          System.err.println("FluteFDT: Element.appendChild: failed");
                                           System.exit(0);  
@@ -301,6 +300,8 @@ void updateFDT(byte [] xmlfdtinstance, int len){
                         }
                 }
         }
+
+  boolean success = (new File(tempname)).delete();         
  }      
 
  /* Adds elements of the FDT to the FileList */
@@ -338,12 +339,10 @@ FFile updateFFile(FFile filelist)
                         }
                         String toi = new String(attr.getValue());
                         long inttoi = Long.valueOf(toi).longValue();
-                
+                                        
                         if(ffile.FFileFindTOI(inttoi, filelist)==null)
-                        {                                       
-                               
+                        {                                           
                                 filelist=addTOItoFFile(filelist, inttoi);
-
                                 int mcl_option = (int) inttoi;
                                 if (flute.mcl.mcl_ctl_FLUTE_DELIVER_THIS_ADU (flute.id, mcl_option)<0){
                                   System.err.println("FluteFDT: mcl_ctl: MCL_OPT_FLUTE_DELIVER_THIS_ADU failed");
@@ -363,7 +362,7 @@ FFile addTOItoFFile(FFile filelist, long toi)
         
         FFile          ffile=new FFile();
          
-        if(!hasTOIinFDT(root,toi)){
+        if(!hasTOIinFDT(root,toi)){    
            return filelist;
         }
                                              
@@ -376,12 +375,26 @@ FFile addTOItoFFile(FFile filelist, long toi)
 
         FFile NewFile = new FFile();
         
-        NewFile.fullname=new String("./"+filename);       
-        NewFile.writeIt = CheckWriteContext(NewFile.fullname, flute.overwrite);
+        NewFile.fullname=new String(filename);       
+//        NewFile.writeIt = CheckWriteContext(NewFile.fullname, flute.overwrite);
+        NewFile.writeIt = true;
         NewFile.received=0;
-        NewFile.toi = toi;
+        NewFile.toi = toi; 
+               
+
+
         if(NewFile.writeIt)
          {
+            // need to create directory tree first
+            File test = new File(NewFile.fullname) ;      
+            try {          
+            test.mkdirs() ;
+            } catch (Exception ex) {
+              System.err.println("FluteFDT: Error while creating  \""+NewFile.fullname+"\"");
+              System.exit(0);
+            }
+            test.delete();
+            // ok, now we can be sure the directory exists, so we can actually open the file
             try { 
                NewFile.fd=new FileOutputStream(NewFile.fullname);
             } catch (Exception ex) {
@@ -390,7 +403,9 @@ FFile addTOItoFFile(FFile filelist, long toi)
             }
           }
          NewFile.next = null;
-         ffile.FFileInsert(filelist, NewFile);
+               
+         if(filelist==null)filelist = new FFile();
+         filelist.FFileInsert( NewFile);                 
 
          return filelist;        
 }

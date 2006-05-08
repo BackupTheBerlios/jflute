@@ -49,7 +49,7 @@ class flute {
    static int     nb_tx = 1;
    static int     delivery_mode = MCL_JNI.DEL_MODE_PUSH;
    static int     optimode = OPTIMIZE_SPEED;
-   static int     single_layer = 0;
+   static int     single_layer = 1;
    
    static MCL_JNI mcl;
    static FDT fdt;

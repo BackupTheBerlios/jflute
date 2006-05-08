@@ -127,14 +127,12 @@ void RecvFiles()
 //cf                pthread_mutex_lock(&flutemutex);
                 if(toi==0) /*we have an fdt instance */
                 {                                                       
-                        flute.fdt.updateFDT(buf, len);
+                        flute.fdt.updateFDT(buf, len); 
                         if (flute.interactive==0) flute.myFiles=flute.fdt.updateFFile(flute.myFiles);
                         
                 }
                 else if((ThisFile=ffile.FFileFindTOI(toi, flute.myFiles))!=null) /*reception of a known & selected file */
-                {
-                        System.out.println("Received file "+ThisFile.fullname);
-                        
+                {                        
                         if((ThisFile.writeIt) && (ThisFile.fd != null))
                         {       
                               try {
@@ -143,7 +141,7 @@ void RecvFiles()
                                        System.err.println("fluteReceive: Unable to write file \""+ThisFile.fullname+"\"");
                               }
         
-                                System.out.println("Writing file \""+ThisFile.fullname+"\" ("+ThisFile.filesize+" Bytes).");
+                                System.out.println("Writing file \""+ThisFile.fullname);
 
                               try {
                                  ThisFile.fd.close();
@@ -162,6 +160,8 @@ void RecvFiles()
                 }
                 else /*received unknown or unwanted file*/
                 {
+                //ffile.FFileFindTOI(toi, flute.myFiles))
+ System.out.println("WARNING: Unknown "+flute.myFiles);                
                          System.out.println("WARNING: Received unknown file");
                 }
 

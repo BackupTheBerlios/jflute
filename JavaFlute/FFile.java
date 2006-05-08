@@ -2,6 +2,7 @@
 import java.io.FileOutputStream;
 import mcl.MCL_JNI;
 
+
 class FFile {
 
         String          fullname;
@@ -17,11 +18,15 @@ class FFile {
     next=null;
     fd=null;
   }
-
-void FFileInsert(FFile p_filelist, FFile newfile )
+  
+void FFileInsert( FFile newfile )
 {
-        FFile List = p_filelist;
+   // This doesn't work properly, since the direct port from C to Java doesn't behave
+   // the same, since pointer structures are handled utterly different. Doesn't matter
+   // though, since we're currently using one file at a time anyway...
+        FFile List = this;
 
+        
         if (List == null) {
                 List = new FFile();
         }       
@@ -41,6 +46,9 @@ void FFileInsert(FFile p_filelist, FFile newfile )
         List.toi = newfile.toi;
         List.filesize = newfile.filesize;
         List.next = null;
+        
+        //return List;
+
 }
 
 FFile FFileFind( String fullname, FFile filelist )
@@ -62,8 +70,9 @@ FFile FFileFind( String fullname, FFile filelist )
 FFile FFileFindTOI( long toi, FFile filelist )
 {
         FFile found = null;
-        FFile listloop = filelist;
-        
+        FFile listloop;  
+
+        listloop = filelist;  
         while(listloop != null)
         {
                 if(listloop.toi==toi) {
